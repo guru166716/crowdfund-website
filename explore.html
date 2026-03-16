@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore Campaigns | CrowdFund</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.progress-bar{
+width:100%;
+height:10px;
+background:#eee;
+border-radius:10px;
+margin-top:10px;
+overflow:hidden;
+}
+
+.progress{
+height:100%;
+background:#28a745;
+width:0%;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<nav class="navbar">
+
+<div class="logo">CrowdFund</div>
+
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="explore.html">Explore</a></li>
+<li><a href="how-it-works.html">How it Works</a></li>
+<li><a href="#">Login</a></li>
+<li><a href="create-campaign.html" class="start-campaign">Create Campaign</a></li>
+</ul>
+
+</nav>
+</header>
+
+<section class="explore-header">
+<h1>Explore Fundraising Campaigns</h1>
+<p>Discover causes and support people who need help.</p>
+</section>
+
+<section class="campaigns">
+<h2>Featured Campaigns</h2>
+<div class="campaign-grid" id="campaignGrid"></div>
+</section>
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-section">
+
+<h3>CrowdFund</h3>
+
+<p>
+CrowdFund helps people raise money for personal, social, and creative causes.
+</p>
+
+</div>
+
+<div class="footer-section">
+
+<h3>Quick Links</h3>
+
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">Explore Campaigns</a></li>
+<li><a href="#">Start Campaign</a></li>
+<li><a href="#">How it Works</a></li>
+</ul>
+
+</div>
+
+<div class="footer-section">
+
+<h3>Support</h3>
+
+<ul>
+<li><a href="#">Help Center</a></li>
+<li><a href="#">Safety</a></li>
+<li><a href="#">Terms</a></li>
+<li><a href="#">Privacy</a></li>
+</ul>
+
+</div>
+
+<div class="footer-section">
+
+<h3>Contact</h3>
+
+<p>Email: support@crowdfund.com</p>
+<p>Phone: +91 9876543210</p>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+<p>© 2026 CrowdFund Platform | Developed by Seven-Hub Technologies</p>
+
+</div>
+
+</footer>
+
+<script>
+
+let campaigns = JSON.parse(localStorage.getItem("campaigns")) || [];
+let grid = document.getElementById("campaignGrid");
+
+grid.innerHTML = "";
+
+// If no campaigns
+if(campaigns.length === 0){
+    grid.innerHTML = "<p>No campaigns created yet.</p>";
+}
+
+campaigns.forEach((campaign, index) => {
+
+    let percent = 0;
+
+    if(campaign.goal > 0){
+        percent = Math.min((campaign.raised / campaign.goal) * 100, 100);
+    }
+
+    let card = document.createElement("div");
+    card.className = "campaign-card";
+
+    // ✅ Show image only if exists
+    let imageHTML = "";
+
+    if(campaign.image && campaign.image.trim() !== ""){
+        imageHTML = `<img src="${campaign.image}" alt="Campaign Image">`;
+    }
+
+    card.innerHTML = `
+        ${imageHTML}
+        <h3>${campaign.title}</h3>
+        <p class="campaign-desc">${campaign.description || ""}</p>
+        <p>₹${campaign.raised} raised of ₹${campaign.goal}</p>
+
+        <div class="progress-bar">
+            <div class="progress" style="width:${percent}%"></div>
+        </div>
+
+        <button onclick="donate(${index})" class="donate-btn">Donate</button>
+    `;
+
+    grid.appendChild(card);
+
+});
+
+function donate(index){
+    localStorage.setItem("selectedCampaign", index);
+    window.location.href="donate.html";
+}
+
+</script>
+
+</body>
+</html>

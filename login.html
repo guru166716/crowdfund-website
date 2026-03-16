@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | CrowdFund</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+/* PASSWORD BOX */
+
+.password-box{
+position:relative;
+}
+
+.password-box input{
+width:100%;
+padding:12px;
+border:1px solid #ddd;
+border-radius:8px;
+}
+
+.password-box span{
+position:absolute;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+font-size:18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<nav class="navbar">
+
+<div class="logo">CrowdFund</div>
+
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="explore.html">Explore</a></li>
+<li><a href="create-campaign.html">Create Campaign</a></li>
+</ul>
+
+</nav>
+</header>
+
+<section class="login-section">
+
+<h1>Login to Your Account</h1>
+
+<form id="loginForm">
+
+<label>Email</label>
+<input type="email" id="email" placeholder="Enter your email" required>
+
+<label>Password</label>
+
+<div class="password-box">
+<input type="password" id="password" placeholder="Enter your password" required>
+<span onclick="togglePassword()">👁</span>
+</div>
+
+<!-- Forgot password -->
+<p style="text-align:right; font-size:14px;">
+<a href="forgot.html">Forgot Password?</a>
+</p>
+
+<button type="submit">Login</button>
+
+<!-- Create account -->
+<p style="margin-top:15px; text-align:center;">
+New to CrowdFund? 
+<a href="signup.html">Create an account</a>
+</p>
+
+</form>
+
+</section>
+
+<script>
+
+function togglePassword(){
+
+let pass = document.getElementById("password");
+
+if(pass.type === "password"){
+pass.type = "text";
+}else{
+pass.type = "password";
+}
+
+}
+
+document.getElementById("loginForm").addEventListener("submit", function(e){
+
+e.preventDefault();
+
+let email = document.getElementById("email").value;
+let password = document.getElementById("password").value;
+
+let user = JSON.parse(localStorage.getItem("user_"+email));
+
+if(user && user.password === password){
+
+localStorage.setItem("loggedInUser", email);
+
+alert("Login Successful!");
+
+window.location.href="index.html";
+
+}
+else{
+
+alert("Invalid Email or Password");
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

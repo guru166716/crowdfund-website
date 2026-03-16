@@ -1,0 +1,117 @@
+<!DOCTYPE html> 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Complete Payment</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<section class="payment-section">
+
+<h1>Complete Your Donation</h1>
+
+<p>Select your payment method</p>
+
+<div class="payment-options">
+
+<button type="button" onclick="showCard()">💳 Card Payment</button>
+
+<button type="button" onclick="showUPI()">📱 UPI Payment</button>
+
+</div>
+
+
+<!-- CARD PAYMENT -->
+
+<div id="cardPayment" class="payment-box">
+
+<h2>Card Payment</h2>
+
+<form class="payment-form">
+
+<label>Card Number</label>
+<input type="text" placeholder="1234 5678 9012 3456">
+
+<label>Card Holder Name</label>
+<input type="text" placeholder="Name on Card">
+
+<label>Expiry Date</label>
+<input type="text" placeholder="MM/YY">
+
+<label>CVV</label>
+<input type="password" placeholder="123">
+
+<button type="button" onclick="completePayment()">Pay Now</button>
+
+</form>
+
+</div>
+
+
+<!-- UPI PAYMENT -->
+
+<div id="upiPayment" class="payment-box" style="display:none;">
+
+<h2>Scan & Pay with UPI</h2>
+
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=test@upi" alt="UPI QR">
+
+<p>Scan this QR using any UPI app</p>
+
+<p>PhonePe / Google Pay / Paytm</p>
+
+<button type="button" onclick="completePayment()">Payment Done</button>
+
+</div>
+
+</section>
+
+
+<script>
+
+function showCard(){
+document.getElementById("cardPayment").style.display="block";
+document.getElementById("upiPayment").style.display="none";
+}
+
+function showUPI(){
+document.getElementById("cardPayment").style.display="none";
+document.getElementById("upiPayment").style.display="block";
+}
+
+function completePayment(){
+
+let amount = parseInt(localStorage.getItem("donationAmount"));
+
+let campaigns = JSON.parse(localStorage.getItem("campaigns")) || [];
+
+let selectedCampaign = localStorage.getItem("selectedCampaign");
+
+if(selectedCampaign !== null){
+
+campaigns[selectedCampaign].raised =
+(parseInt(campaigns[selectedCampaign].raised) || 0) + amount;
+
+localStorage.setItem("campaigns", JSON.stringify(campaigns));
+
+}
+
+alert("✅ Payment Successful! Thank you for your donation.");
+
+window.location.href="explore.html";
+
+}
+
+</script>
+
+</body>
+
+</html>
